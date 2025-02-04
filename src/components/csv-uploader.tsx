@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useCallback } from "react"
-import { useDropzone } from "react-dropzone"
-import { Card, CardContent } from "@/components/ui/card"
-import { Upload } from "lucide-react"
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { Card, CardContent } from '@/components/ui/card'
+import { Upload } from 'lucide-react'
 
 interface CSVUploaderProps {
   onFileUpload: (file: File) => void
@@ -16,13 +16,13 @@ export function CSVUploader({ onFileUpload }: CSVUploaderProps) {
         onFileUpload(acceptedFiles[0])
       }
     },
-    [onFileUpload],
+    [onFileUpload]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      "text/csv": [".csv"],
+      'text/csv': ['.csv'],
     },
     multiple: false,
   })
@@ -40,7 +40,9 @@ export function CSVUploader({ onFileUpload }: CSVUploaderProps) {
           ) : (
             <div>
               <Upload className="mx-auto h-12 w-12 text-gray-400" />
-              <p>Arraste e solte um arquivo CSV aqui, ou clique para selecionar</p>
+              <p>
+                Arraste e solte um arquivo CSV aqui, ou clique para selecionar
+              </p>
             </div>
           )}
         </div>
@@ -48,4 +50,3 @@ export function CSVUploader({ onFileUpload }: CSVUploaderProps) {
     </Card>
   )
 }
-

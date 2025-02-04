@@ -13,7 +13,7 @@ interface RegionData {
 }
 
 const regions: { [key: string]: string[] } = {
-  Norte: ["Acre", "Amapá", "Amazonas", "Pará", "Rondônia", "Roraima", "Tocantins"],
+  Norte: ["Acre", "Amapa", "Amazonas", "Pará", "Rondônia", "Roraima", "Tocantins"],
   Nordeste: [
     "Alagoas",
     "Bahia",
@@ -22,48 +22,66 @@ const regions: { [key: string]: string[] } = {
     "Paraíba",
     "Pernambuco",
     "Piauí",
-    "Rio Grande do Norte",
+    "Rio Grande Norte",
     "Sergipe",
   ],
-  "Centro-Oeste": ["Distrito Federal", "Goiás", "Mato Grosso", "Mato Grosso do Sul"],
-  Sudeste: ["Espírito Santo", "Minas Gerais", "Rio de Janeiro", "São Paulo"],
+  "Centro-Oeste": ["Distrito Federal", "Goias", "Mato Grosso", "Mato Grosso do Sul"],
+  Sudeste: ["Espirito Santo", "Minas Gerais", "Rio de Janeiro", "São Paulo"],
   Sul: ["Paraná", "Rio Grande do Sul", "Santa Catarina"],
 }
+
+const stateToRegion: { [key: string]: string } = Object.entries(regions).reduce(
+  (acc, [region, states]) => {
+    states.forEach((state) => {
+      acc[state] = region
+    })
+    return acc
+  },
+  {} as { [key: string]: string },
+)
 
 export function processCSV(file: File): Promise<RegionData> {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
-      complete: (results : any) => {
+      encoding: "utf-8",
+      complete: (results: any) => {
         const data: RegionData = {}
-
+        console.log(data)
         results.data.forEach((row: CSVRow) => {
           const state = row.region
-          const value = Number(row.value)
+          const quantity = Number(row.value)
+          
+          if (isNaN(quantity)) return
 
-          if (isNaN(value)) return
-
-          for (const [region, states] of Object.entries(regions)) {
-            if (states.includes(state)) {
-              if (!data[region]) {
-                data[region] = { total: 0 }
-              }
-              if (!data[region][state]) {
-                data[region][state] = 0
-              }
-              data[region][state] += value
-              data[region].total += value
-              break
+          const region = stateToRegion[state]
+          if (region) {
+            if (!data[region]) {
+              data[region] = { total: 0 }
             }
+            if (!data[region][state]) {
+              data[region][state] = 0
+            }
+            data[region][state] += quantity
+            data[region].total += quantity
           }
         })
-
+        Object.entries(regions).forEach(([region, states]) => {
+          if (!data[region]) {
+            data[region] = { total: 0 }
+          }
+          states.forEach((state) => {
+            if (!data[region][state]) {
+              data[region][state] = 0
+            }
+          })
+        })
+        console.log(data)
         resolve(data)
       },
-      error: (error : any) => {
+      error: (error: any) => {
         reject(error)
       },
     })
   })
 }
-

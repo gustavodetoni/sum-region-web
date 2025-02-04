@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface RegionData {
   [region: string]: {
@@ -23,17 +23,19 @@ export function RegionDataDisplay({ data }: RegionDataDisplayProps) {
             <ul>
               {Object.entries(regionData).map(
                 ([state, value]) =>
-                  state !== "total" && (
+                  state !== 'total' && (
                     <li key={state} className="flex justify-between">
                       <span>{state}</span>
-                      <span>{value}</span>
+                      <span>{new Intl.NumberFormat('pt-BR').format(value)}</span>
                     </li>
-                  ),
+                  )
               )}
             </ul>
             <div className="mt-4 pt-2 border-t flex justify-between font-bold">
               <span>Total</span>
-              <span>{new Intl.NumberFormat('pt-BR').format(regionData.total)}</span>
+              <span>
+                {new Intl.NumberFormat('pt-BR').format(regionData.total)}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -41,4 +43,3 @@ export function RegionDataDisplay({ data }: RegionDataDisplayProps) {
     </div>
   )
 }
-
