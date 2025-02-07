@@ -13,13 +13,13 @@ interface RegionData {
 }
 
 const regions: { [key: string]: string[] } = {
-  Norte: ["Acre", "Amapa", "Amazonas", "Pará", "Rondônia", "Roraima", "Tocantins"],
+  Norte: ["Acre", "Amapá", "Amazonas", "Pará", "Rondônia", "Roraima", "Tocantins"],
   Nordeste: [
     "Alagoas",
     "Bahia",
     "Ceará",
     "Maranhão",
-    "Paraíba",
+    "Paraiba",
     "Pernambuco",
     "Piauí",
     "Rio Grande Norte",
